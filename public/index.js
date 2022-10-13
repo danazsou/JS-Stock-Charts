@@ -56,6 +56,72 @@ const stocks = [GME, MSFT, DIS, BNTX];
 
     
    //begin new chart for highest
+   //use same format as above but need to change type, label (.map)
+   //don't forget the function for this
+
+   new Chart(highestPriceChartCanvas.getContext('2d'), {
+    type: 'bar',
+    data: {
+        labels: stocks.map(stock => stock.meta.symbol),
+        datasets: [{
+            label: 'Highest',
+            backgroundColor: stocks.map(stock => (
+                getColor(stock.meta.symbol)
+            )),
+            borderColor: stocks.map(stock => (
+                getColor(stock.meta.symbol)
+            )),
+            data: stocks.map(stock => (
+                findHighest(stock.values)
+            ))
+        }]
+    }
+});
+
+// repeat, change type type to pie. use .map again
+//write function for this as well or chart will not show 
+
+
+new Chart(averagePriceChartCanvas.getContext('2d'), {
+    type: 'pie',
+    data: {
+        labels: stocks.map(stock => stock.meta.symbol),
+        datasets: [{
+            label: 'Average',
+            backgroundColor: stocks.map(stock => (
+                getColor(stock.meta.symbol)
+            )),
+            borderColor: stocks.map(stock => (
+                getColor(stock.meta.symbol)
+            )),
+            data: stocks.map(stock => (
+                calculateAverage(stock.values)
+            ))
+        }]
+    }
+});
+}
+
+
+// pass in values 
+function findHighest(values) {
+let highest = 0;
+values.forEach(value => {
+    if (parseFloat(value.high) > highest) {
+        highest = value.high
+    }
+})
+return highest
+}
+
+
+//pass in values and this one will have to be divided but total because returning and average
+function calculateAverage(values) {
+let total = 0;
+values.forEach(value => {
+    total += parseFloat(value.high)
+})
+return total / values.length
 }
 
 main()
